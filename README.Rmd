@@ -1,7 +1,7 @@
 ---
-title: "Untitled"
+title: "ITS Seminar"
 author: "Andrea Gilardi"
-date: "3/11/2019"
+date: "`r Sys.Date()`"
 output: github_document
 ---
 
@@ -9,13 +9,24 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+A few random ideas:
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
+1. Car crashes data for IOW
+    1. Definition of Non-Homogeneous Poisson Point Process
+    1. How to get the data (STATS19)
+    1. Smoothing Estimation of Intensity Function (i.e. ignoring the network)
+1. Street Network data for IOW
+    1. Definition
+    1. How to get the data (geofabric)
+    1. Pitfalls and how to solve them
+1. (Maybe) How to split the network
+1. Modelling:
+    1. Projections of car crashes on street network and raw counts
+    1. Non-parametric smoothing (i.e. London course methods)
+    1. Why network preprocessing is important
+    1. Empirical Bayes 
+        1. definition
+        1. Measure of correlation
+        1. graphical results
+     
+    
