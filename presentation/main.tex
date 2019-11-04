@@ -1,0 +1,214 @@
+\documentclass[c,10pt,pdftex]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage{ucs} % for utf8x
+
+\usepackage{graphicx}
+
+\usetheme{tb}
+
+\title{Transport networks and road safety}
+
+% Nom de l'auteur
+\author{Andrea Gilardi \inst{1} \and Robin Lovelace \inst{2}}
+\institute{\inst{1} University of Milan - Bicocca \and \inst{2} University of Leeds - ITS}
+
+\begin{document}
+
+\inserttitlepage
+
+\begin{frame}
+\frametitle{Who am I}
+\end{frame}
+
+\begin{frame}
+\frametitle{Overview of the seminar}
+\begin{enumerate}
+	\item A
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{A few definitions}
+\vspace{-0.75cm}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item In a super informal way we can say that a \textbf{Point Process} is a random mechanism whose outcomes are \textbf{Point Patterns}, i.e. a (finite) sequence of points in the space. 
+	
+	\item Classical examples of point processes are: tree locations in a forest (the classic swedish pines data), animal nesting sites, ambulance interventions or, as  in this seminar, car crashes. 
+	
+	\item We will use these data to formalize the first steps we took towards the definition of a precise model that can be used to locate the most dangerous locations for car crashes (i.e. the black spots). 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Car crashes data}
+\vspace{-0.75cm}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item In the following part of this seminar, we will analyze data for car crashes that occurred in the Isle of Wight (UK) during 2018. 
+	
+	\item We downloaded the data using the \texttt{stats19} package, which is a tool to help download, process and analyse the UK road collision data collected using the 'STATS19' form. 
+	
+	\item These data are really rich and they include several additional information (like the severity of the crash, the weather, the light condition and several other markers) but, for the moment, we will focus only on the location of the events. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Car crashes data (cont)}
+\vspace{-0.25cm}
+This is a graphical representation of the car crashes occurred in the Isle of Wight (UK) during 2018. There are some clear patterns in the data that we need to take into account.
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{images/iow_crashes}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Point Processes on a Street Network}
+\vspace{-0.25cm}
+Car crashes represent a classical example of a point process occurring on a linear network and the usual statistical techniques (as the following quadratcount) are not valid. 
+\vspace{-0.5cm}
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{images/quadratcount2}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Street Networks}
+\vspace{-0.75cm}
+\begin{itemize}
+  \setlength\itemsep{1em}
+  \item The road network we use is built using OpenStreetMap data. 
+  \item OpenStreetMap is a project that aims at building a free and editable map of the World with an open-content license. 
+  \item The basic components of OpenStreetMap data are called \textit{elements} and they consist of: 
+  \begin{itemize}
+    \setlength\itemsep{0.25em}
+    \item \textit{nodes}: representing points on the earth surface; 
+    \item \textit{ways}: which is an ordered list of nodes; 
+    \item \textit{relations}: which is a list of nodes, ways and other relations. Each member has additional information that describe its relationship with the other elements. Roads, turn restrictions and administrative boundaries are usually described as relations.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Street Network in the Isle of Wight}
+This is a graphical representation of the main roads in the Isle of Wight. 
+\vspace{-0.75cm}
+\begin{figure}
+\centering
+\includegraphics[width = 1.05\linewidth]{images/highway_type}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\texttt{stplanr} - networks}
+  \vspace{-0.75cm}
+  \begin{itemize}
+    \setlength\itemsep{1em}
+    \item Broadly speaking, let's say that a street network is a network whose nodes and edges are associated with geographical elements in the space. 
+    \item In the \texttt{stplanr} representation of a street network, the edges are the ways that were download from OSM while the vertexes are the starting and ending node of each way. 
+    \item This representation implies that two or more edges are \textit{connected} if and only if they share one or more boundary point. 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Problems...}
+  \vspace{-0.5cm}
+  Theories and definitions are fine but obviously the data we face in the wild world is quite different. We will discuss three probems: \textbf{roundabouts} (i.e. circular ways), \textbf{overpasses} (i.e. intersecting ways that are not really connected due to a vertical grade of separation) and (some) \textbf{street intersections}.  
+  \begin{columns}
+  	\begin{column}{0.5\linewidth}
+  		\begin{figure}
+  			\centering
+  			\Large \textbf{Theory} \par \medskip
+  			\includegraphics[width = \linewidth]{images/theory.png}
+  		\end{figure}
+  	\end{column}
+  	\begin{column}{0.5\linewidth}
+  		\begin{figure}
+  			\centering
+  			\Large \textbf{Real Data} \par \medskip
+  			\includegraphics[width = \linewidth]{images/real_data.png}
+  		\end{figure}
+  	\end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Roundabouts, i.e. circular ways}
+  \vspace{-0.25cm}
+  The roundabout on the left is unroutable by \texttt{stplanr}-definition of spatial network since the roundabout is not connected to the other edges.  
+  \vspace{-0.55cm}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+      \centering
+      \large \textbf{Before} \par \medskip
+      \includegraphics[width = 0.9\linewidth, trim = {0 0 0 4cm}, clip]{images/roundabout1}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+      \centering
+      \large \textbf{After} \par \medskip
+      \includegraphics[width = 0.9\linewidth, trim = {0 0 0 4cm}, clip]{images/roundabout2}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Bridges, overpasses and underpasses}
+\vspace{-0.75cm}
+Even if we break up a street network (unroutable on the left) we must be sure  not to ruin overpasses and underpasses relations. 
+\begin{columns}
+	\begin{column}{0.5\linewidth}
+		\begin{figure}
+			\centering
+			\large \textbf{Before} \par \medskip
+			\includegraphics[width = \linewidth, trim = {4cm 0 3.75cm 0}, clip]{images/overpasses1}
+		\end{figure}
+	\end{column}
+\begin{column}{0.5\linewidth}
+	\begin{figure}
+		\centering
+		\large \textbf{After} \par \medskip
+		\includegraphics[width = \linewidth, trim = {4cm 0 3.75cm 0}, clip]{images/overpasses2}
+	\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Streets intersections}
+\vspace{-0.75cm}
+There are also some cases where two streets intersects and they don't share any vertex.
+\begin{columns}
+	\begin{column}{0.5\linewidth}
+		\begin{figure}
+			\centering
+			\large \textbf{Before} \par \medskip
+			\includegraphics[width = \linewidth, trim = {5.5cm 0 4.5cm 0}, clip]{images/intersections1}
+		\end{figure}
+	\end{column}
+\begin{column}{0.5\linewidth}
+	\begin{figure}
+		\centering
+		\large \textbf{After} \par \medskip
+		\includegraphics[width = \linewidth, trim = {5.5cm 0 4.5cm 0}, clip]{images/intersections2}
+	\end{figure}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{TODO}
+\begin{itemize}
+	\item Add citations and fix bibliography
+	\item Add copyrights to memes
+\end{itemize}
+\end{frame}
+\end{document}
