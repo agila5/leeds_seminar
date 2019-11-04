@@ -6,10 +6,9 @@ Andrea Gilardi
 A few random ideas:
 
 1.  Car crashes data for IOW
-    1.  Definition of Non-Homogeneous Poisson Point Process
+    1.  Definition of Point Process
     2.  How to get the data (STATS19)
-    3.  Smoothing Estimation of Intensity Function (i.e. ignoring the
-        network)
+    3.  Quadrat counts ignoring the network
 2.  Street Network data for IOW
     1.  Definition
     2.  How to get the data (geofabric)
