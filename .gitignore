@@ -2,3 +2,10 @@
 .Rhistory
 .RData
 .Ruserdata
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.syntex.gz
+*.toc
