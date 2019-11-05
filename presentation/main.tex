@@ -35,7 +35,7 @@
 \vspace{-0.75cm}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item In a super informal way we can say that a \textbf{Point Process} is a random mechanism whose outcomes are \textbf{Point Patterns}, i.e. a (finite) sequence of points in the space. 
+	\item Informally, a \textbf{Point Process} is a random mechanism whose outcomes are \textbf{Point Patterns}, i.e. a (finite) sequence of points in the space. 
 	
 	\item Classical examples of point processes are: tree locations in a forest (the classic swedish pines data), animal nesting sites, ambulance interventions or, as  in this seminar, car crashes. 
 	
@@ -103,6 +103,28 @@ This is a graphical representation of the main roads in the Isle of Wight.
 \includegraphics[width = 1.05\linewidth]{images/highway_type}
 \end{figure}
 \end{frame}
+
+\begin{frame}
+  \frametitle{Representing networks as graphs}
+  \vspace{-0.75cm}
+  \begin{itemize}
+    \setlength\itemsep{1em}
+    \item Typically roads are represented purely as geographic objects, but they are also graphs
+    \item A few ways of representing spatial networks have been developed, including in the R package \texttt{stplanr}
+    \includegraphics[width = 1.05\linewidth]{images/stplanr-wide-screenshot}
+    % \item That is, roughly speaking, how Robin and I met
+  \end{itemize}
+\end{frame}
+
+% \begin{frame}
+%   \frametitle{Getting road crash data with the stats19 package}
+%   % suggestion: demonstrate code for getting stats19, say we taught it in London
+% \end{frame}
+% 
+% \begin{frame}
+%   \frametitle{Getting road network data}
+%   % Mention that it's easier than ever to get OSM data, thanks to another package we developed?
+% \end{frame}
 
 \begin{frame}
   \frametitle{\texttt{stplanr} - networks}
