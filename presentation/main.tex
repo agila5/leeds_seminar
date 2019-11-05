@@ -239,15 +239,6 @@ This is the result. You should note that we excluded all car crashes that were f
 \end{figure}
 \end{frame}
 
-\begin{frame}{The first road risk measure}
-\vspace{-0.25cm}
-This is the result. You should note that we excluded all car crashes that were farther than 100m from the nearest network edge (33  crashes). 
-\begin{figure}
-	\centering
-	\includegraphics[width=\linewidth]{images/count_on_nearest_street}
-\end{figure}
-\end{frame}
-
 \begin{frame}{Problems with the raw counts measure}
 \begin{itemize}
 	\setlength\itemsep{1em}
@@ -266,16 +257,40 @@ This is the result and, then again, there are some obvious problems: there are a
 \end{figure}
 \end{frame}
 
-\begin{frame}{Smoothing on a linear network}
+\begin{frame}{Local smoothing on a linear network}
+\vspace{-0.75cm}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item Let $n$ be the number of edges in the street network, $x_i, \ i = 1,\dots,n$ the number of car crashes occurring in each edge and $m_i, \ i = 1\dots n$ the length of each way. 
+	\item Let $n$ be the number of edges in the street network, $x_i, \ i = 1,\dots,n$ the number of car crashes occurring in each edge and $l_i, \ i = 1\dots n$ the length of each way. The ratio 
+	\[
+	y_i = \frac{x_i}{l_i}, \ i = 1, \dots, n
+	\] 
+	represent the number of car crashes per meter. 
+	
+	\item Let $\delta_{i, p}$ represent the set of all neighbours of each street $i$ up to order $p$. If $p = 0$ then $\delta_{i, p}$ includes only the $i$-th street segment; if $p = 1$ then $\delta_{i, 1}$ includes the street segment $i$ and its neighbours\footnote{In the \texttt{stplanr} representation of street networks, two ways are neighbours if they share one boundary point}; if $p = 2$ then $\delta_{i,2}$ includes the street segment, its neighbours and the neighbours of its neighbours and so on\dots
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Local smoothing on a linear network}
+\vspace{-0.5cm}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Now we can perform a local smoothing of $y_i$, i.e. the number of car crashes per meter, as
+	\[
+	\tilde{y}_i = \frac{1}{m_i}\sum_{j \in \delta_{i, p}} y_{j} 
+	\]
+	where $m_i$ represent the number of elements included in $\delta_{i, p}$. 
+	
+	\item The value of $p$ is an input for the procedure and represent the degree of the smoothing: small values represent a local smoothing while higher values create a "global" smoothing. For example if we take $p = n$ then every segment is linked with the same value, i.e. $\tilde{y} = \frac{1}{n}\sum_{i=1}^{n}y_{i} \ \forall i = 1, \dots, n$. 
+	
+	\item We'll see later a few methods that can be used to decide the value of $p$. 
+	\item The procedure was coded using the \texttt{igraph} package.
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Smoothing on a linear network}
 \vspace{-0.25cm}
-This is the result with = 6. We'll talk later on how to choose that value. Now it's possible to extract some information from that plot. 
+This is the result with $p = 6$. Obviously this procedure has several drawbacks but at least now it's possible to extract some information from that plot. 
 \begin{figure}
 	\centering
 	\includegraphics[width=\linewidth]{images/car_crashes_per_meter_smooth6}
@@ -283,10 +298,12 @@ This is the result with = 6. We'll talk later on how to choose that value. Now i
 \end{frame}
 
 \begin{frame}{Why network cleaning is important?}
-\begin{itemize}
-	\setlength\itemsep{1em}
-	\item To solved that new problem
-\end{itemize}
+\vspace{-0.25cm}
+This is the same procedure applied to the street network without the cleaning and with $p = n$. It's clear that there is something wrong.
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{images/importance_of_network_cleaning}
+\end{figure}
 \end{frame}
 
 \begin{frame}
