@@ -231,10 +231,63 @@ Summary of the models
 \end{frame}
 
 \begin{frame}{The first road risk measure}
-This is the result. You should note that we excluded all car crashes that were farther than 100m from the nearest network edge (33 crashes). 
+\vspace{-0.25cm}
+This is the result. You should note that we excluded all car crashes that were farther than 100m from the nearest network edge (33  crashes). 
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{images/count_on_nearest_street}
+\end{figure}
 \end{frame}
 
+\begin{frame}{The first road risk measure}
+\vspace{-0.25cm}
+This is the result. You should note that we excluded all car crashes that were farther than 100m from the nearest network edge (33  crashes). 
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{images/count_on_nearest_street}
+\end{figure}
+\end{frame}
 
+\begin{frame}{Problems with the raw counts measure}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item There are some clear problems with the previous risk measure and, the most important one, is that we are comparing ways with very different length (which is what we are going to call \textit{exposure}). 
+	\item There are two possible solutions: 1) rebuild the network cutting and pasting ways in such a way that they all have approximately the same length; 2) estimate the number of car crashes per meter. 
+	\item For the moment we are working with the second solution since the other one is much more difficult to implement. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Car crashes per meter}
+\vspace{-0.25cm}
+This is the result and, then again, there are some obvious problems: there are a few car crashes occurring in very small road segments that artificially inflate this risk index.  
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{images/car_crashes_per_meter}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Smoothing on a linear network}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Let $n$ be the number of edges in the street network, $x_i, \ i = 1,\dots,n$ the number of car crashes occurring in each edge and $m_i, \ i = 1\dots n$ the length of each way. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Smoothing on a linear network}
+\vspace{-0.25cm}
+This is the result with = 6. We'll talk later on how to choose that value. Now it's possible to extract some information from that plot. 
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{images/car_crashes_per_meter_smooth6}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Why network cleaning is important?}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item To solved that new problem
+\end{itemize}
+\end{frame}
 
 \begin{frame}
 \frametitle{TODO}

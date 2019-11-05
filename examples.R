@@ -7,6 +7,7 @@ library(spatstat)
 library(geofabric)
 library(osmdata)
 library(ggspatial)
+library(igraph)
 library(conflicted)
 
 # resolve conflicts
@@ -234,17 +235,15 @@ iow_main_highways <- read_sf("data/iow_main_highways.gpkg") %>% rename(geometry 
 # Fixing the network ------------------------------------------------------
 
 iow_main_highways_breakup <- rnet_breakup_vertices(iow_main_highways)
-# p <- ggplot() + 
-#   geom_sf(data = st_boundary(iow_sf_polygon)) + 
-#   geom_sf(data = iow_main_highways_breakup, aes(col = highway, fill = highway), show.legend = FALSE, size = 1.25) + 
-#   geom_sf(data = car_crashes_2018_iow, size = 1.75) + 
-#   theme_light() + 
-#   scale_fill_viridis_d() + 
-#   scale_color_viridis_d()
-# p
-# ggsave("presentation/images/breaking_network.eps", plot = p, device = "eps", width = 10, height = 5.5)
-
-
+p <- ggplot() +
+  geom_sf(data = st_boundary(iow_sf_polygon)) +
+  geom_sf(data = iow_main_highways_breakup, aes(col = highway, fill = highway), show.legend = FALSE, size = 1.25) +
+  geom_sf(data = car_crashes_2018_iow, size = 1.75) +
+  theme_light() +
+  scale_fill_viridis_d() +
+  scale_color_viridis_d()
+p
+ggsave("presentation/images/breaking_network.eps", plot = p, device = "eps", width = 10, height = 5.5)
 
 # nearest street ----------------------------------------------------------
 car_crashes_2018_iow <- car_crashes_2018_iow[
@@ -255,16 +254,53 @@ car_crashes_2018_iow <- car_crashes_2018_iow[
 iow_main_highways_breakup$number_of_car_crashes <- st_nearest_feature(car_crashes_2018_iow, iow_main_highways_breakup) %>% 
   factor(levels = seq_len(nrow(iow_main_highways_breakup))) %>% table() %>% as.numeric()
 
-p <- iow_main_highways_breakup %>% 
-  mutate(number_of_car_crashes = as.character(number_of_car_crashes)) %>% 
-  ggplot() + 
-  geom_sf(aes(col = number_of_car_crashes, fill = number_of_car_crashes), size = 1.25) +  
-  scale_color_brewer(palette = "RdYlGn", direction = -1) + 
-  scale_fill_brewer(palette = "RdYlGn", direction = -1) + 
-  theme_light() + 
-  theme(legend.position = "bottom", legend.box = "horizontal") + 
+# p <- iow_main_highways_breakup %>% 
+#   mutate(number_of_car_crashes = as.character(number_of_car_crashes)) %>% 
+#   ggplot() + 
+#   geom_sf(aes(col = number_of_car_crashes, fill = number_of_car_crashes), size = 1.25) +  
+#   scale_color_brewer(palette = "RdYlGn", direction = -1, guide = guide_legend(nrow = 1, ncol = 6)) + 
+#   scale_fill_brewer(palette = "RdYlGn", direction = -1, guide = guide_legend(nrow = 1, ncol = 6)) + 
+#   theme_light() + 
+#   theme(legend.position = "bottom") + 
+#   labs(col = "", fill = "")
+# p
+# ggsave("presentation/images/count_on_nearest_street.eps", plot = p, device = "eps", width = 10, height = 5.5)
+
+iow_main_highways_breakup <- iow_main_highways_breakup %>% 
+  mutate(number_of_car_crashes_per_meter =as.numeric(number_of_car_crashes / st_length(.)))
+
+# p <- ggplot(iow_main_highways_breakup) + 
+#   geom_sf(aes(col = number_of_car_crashes_per_meter, fill = number_of_car_crashes_per_meter), size = 1.25) + 
+#   scale_color_distiller(palette = "RdYlGn", direction = -1) + 
+#   scale_fill_distiller(palette = "RdYlGn", direction = -1) + 
+#   theme_light() + 
+#   labs(col = "", fill = "")
+# p
+# ggsave("presentation/images/car_crashes_per_meter.eps", plot = p, device = "eps", width = 10, height = 5.5)
+
+# smoothing ---------------------------------------------------------------
+iow_main_highways_breakup_graph <- st_touches(iow_main_highways_breakup) %>% graph.adjlist()
+iow_main_highways_breakup_graph_ego <- ego(iow_main_highways_breakup_graph, order = 6)
+
+spatial_smoothing <- function(ID, var, graph_ego) {
+  mean(as.numeric({{var}}[graph_ego[[ID]]]))
+}
+
+iow_main_highways_breakup <- iow_main_highways_breakup %>% 
+  mutate(
+    number_of_car_crashes_per_meter_smooth = map_dbl(
+      seq_len(nrow(.)), 
+      spatial_smoothing, 
+      var = number_of_car_crashes_per_meter, 
+      graph_ego = iow_main_highways_breakup_graph_ego
+    )
+  )
+
+p <- ggplot(iow_main_highways_breakup) +
+  geom_sf(aes(col = number_of_car_crashes_per_meter_smooth, fill = number_of_car_crashes_per_meter_smooth), size = 1.25) +
+  scale_color_distiller(palette = "RdYlGn", direction = -1) +
+  scale_fill_distiller(palette = "RdYlGn", direction = -1) +
+  theme_light() +
   labs(col = "", fill = "")
 p
-# smoothing ---------------------------------------------------------------
-
-
+ggsave("presentation/images/car_crashes_per_meter_smooth6.eps", plot = p, device = "eps", width = 10, height = 5.5)
