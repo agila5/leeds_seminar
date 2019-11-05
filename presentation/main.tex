@@ -205,10 +205,43 @@ There are also some cases where two streets intersects and they don't share any 
 \end{frame}
 
 \begin{frame}
+\frametitle{Fixing the street networks}
+\vspace{-0.25cm}
+We developed a new function (called \texttt{rnet\_breakup\_vertices} and stored in \texttt{stplanr} package) to fix all these problems and this is the result. 
+\begin{figure}
+	\centering
+	\includegraphics[width=\linewidth]{images/breaking_network}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Modeling of crashes on street networks}
+Summary of the models
+\end{frame}
+
+\begin{frame}
+\frametitle{Counting crashes on street networks}
+\vspace{-0.75cm}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Following the same ideas behind the quadratcounts on the plane (and some statistical theories) we wrote a few function to count the number of car crashes occurring on each edge of the street network. 
+	\item R can only represent exactly integers numbers and fractions whose denominator is a power of two (source), so none of the car crashes (whose coordinates are represented as double numbers with a 53 binary digits accuracy) lie exactly on the street network.
+	\item For that reason we wrote a few R function to match each car crash with the nearest edge on the network and count the occurrences.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The first road risk measure}
+This is the result. You should note that we excluded all car crashes that were farther than 100m from the nearest network edge (33 crashes). 
+\end{frame}
+
+
+
+\begin{frame}
 \frametitle{TODO}
 \begin{itemize}
 	\item Add citations and fix bibliography
-	\item Add copyrights to memes
+	\item Add credits to memes, OSM and beamer theme
+	\item highlight important word (i.e. \alert{ABC})
 \end{itemize}
 \end{frame}
 \end{document}
