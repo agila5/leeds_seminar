@@ -8,6 +8,8 @@ library(geofabric)
 library(osmdata)
 library(ggspatial)
 library(igraph)
+library(magrittr)
+library(units)
 library(conflicted)
 
 # resolve conflicts
@@ -233,7 +235,6 @@ iow_main_highways <- read_sf("data/iow_main_highways.gpkg") %>% rename(geometry 
 
 
 # Fixing the network ------------------------------------------------------
-
 iow_main_highways_breakup <- rnet_breakup_vertices(iow_main_highways)
 # p <- ggplot() +
 #   geom_sf(data = st_boundary(iow_sf_polygon)) +
@@ -253,7 +254,7 @@ car_crashes_2018_iow <- car_crashes_2018_iow[
 ]
 iow_main_highways_breakup$number_of_car_crashes <- st_nearest_feature(car_crashes_2018_iow, iow_main_highways_breakup) %>% 
   factor(levels = seq_len(nrow(iow_main_highways_breakup))) %>% table() %>% as.numeric()
-
+iow_main_highways_breakup$segment_length <- st_length(iow_main_highways_breakup)
 # p <- iow_main_highways_breakup %>% 
 #   mutate(number_of_car_crashes = as.character(number_of_car_crashes)) %>% 
 #   ggplot() + 
@@ -280,18 +281,18 @@ iow_main_highways_breakup <- iow_main_highways_breakup %>%
 
 # smoothing ---------------------------------------------------------------
 iow_main_highways_breakup_graph <- st_touches(iow_main_highways_breakup) %>% graph.adjlist()
-iow_main_highways_breakup_graph_ego <- ego(iow_main_highways_breakup_graph, order = 6)
+iow_main_highways_breakup_graph_ego <- ego(iow_main_highways_breakup_graph, order = 2)
 
 spatial_smoothing <- function(ID, var, graph_ego) {
   mean(as.numeric({{var}}[graph_ego[[ID]]]))
 }
 
-iow_main_highways_breakup <- iow_main_highways_breakup %>% 
+iow_main_highways_breakup <- iow_main_highways_breakup %>%
   mutate(
     number_of_car_crashes_per_meter_smooth = map_dbl(
-      seq_len(nrow(.)), 
-      spatial_smoothing, 
-      var = number_of_car_crashes_per_meter, 
+      seq_len(nrow(.)),
+      spatial_smoothing,
+      var = number_of_car_crashes_per_meter,
       graph_ego = iow_main_highways_breakup_graph_ego
     )
   )
@@ -326,3 +327,167 @@ iow_main_highways_breakup <- iow_main_highways_breakup %>%
 #   scale_fill_distiller(palette = "RdYlGn", direction = -1) + 
 #   theme_light()
 # ggsave("presentation/images/importance_of_network_cleaning.eps", plot = p, device = "eps", width = 10, height = 5.5)
+
+
+# empirical bayes ---------------------------------------------------------
+iow_main_highways_breakup_graph <- st_touches(iow_main_highways_breakup) %>% graph.adjlist()
+empirical_bayes <- function(ID, x, l, graph_ego) {
+  # browser()
+  # raw ratio
+  y <- x[ID] / l[ID]
+  
+  # neighborhood
+  delta <- as.vector(graph_ego[[ID]])
+  
+  # empirical version of the mean of the prior
+  x <- x[delta]
+  l <- l[delta]
+  mu_tilde <- sum(x) / sum(l)
+  
+  # empirical version of the variance of the prior
+  s2 <- sum((x - l * mu_tilde) ^ 2 / l) / sum(l)
+  sigma2_tilde <- max(0, s2 - mu_tilde / mean(l))
+  
+  # empirical version of Pi
+  P <- ifelse(sigma2_tilde + mu_tilde / mean(l) == 0, 1, sigma2_tilde / (sigma2_tilde + mu_tilde / mean(l)))
+  
+  # result
+  theta <- P * y + (1 - P) * mu_tilde
+  theta
+}
+
+iow_main_highways_breakup_graph_ego <- ego(iow_main_highways_breakup_graph, order = 6)
+
+iow_main_highways_breakup <- iow_main_highways_breakup %>%
+  mutate(
+    empirical_bayes_estimate = map_dbl(
+      seq_len(nrow(.)),
+      empirical_bayes,
+      x = number_of_car_crashes, 
+      l = as.numeric(st_length(.)), 
+      graph_ego = iow_main_highways_breakup_graph_ego
+    )
+  )
+
+p <- ggplot(iow_main_highways_breakup) +
+  geom_sf(aes(col = empirical_bayes_estimate, fill = empirical_bayes_estimate), size = 1.25) +
+  scale_color_distiller(palette = "RdYlGn", direction = -1) +
+  scale_fill_distiller(palette = "RdYlGn", direction = -1) +
+  theme_light() +
+  labs(col = "", fill = "")
+p
+# ggsave("presentation/images/empirical_bayes_1.eps", plot = p, device = "eps", width = 10, height = 5.5)
+# it doesn't work whatever is the order of the neighborhood. Why?
+
+iow_main_highways_breakup %>% 
+  select(segment_length, empirical_bayes_estimate) %>% 
+  st_drop_geometry() %>% 
+  arrange(desc(empirical_bayes_estimate))
+
+ggplot(iow_main_highways_breakup) + 
+  geom_histogram(aes(x = as.numeric(segment_length)), bins = 40) + 
+  scale_x_continuous(trans = "log")
+# let's try cutting up the network, I'd like something uniform
+
+# define the threshold
+threshold <- quantile(as.numeric(iow_main_highways_breakup$segment_length), probs = c(0.15)) %>% 
+  units::set_units("m")
+threshold
+
+# extract the geometry
+iow_main_highways_breakup_geometry <- st_geometry(iow_main_highways_breakup)
+
+# sort it according to length
+iow_main_highways_breakup_geometry <- iow_main_highways_breakup_geometry[order(st_length(iow_main_highways_breakup_geometry))]
+
+# define the neighborhoods
+my_neigh <- st_touches(iow_main_highways_breakup_geometry) %>% graph.adjlist() %>% ego(1)
+
+# let's start a loop
+any_segment_too_short <- any(st_length(iow_main_highways_breakup_geometry) < threshold)
+
+while(any_segment_too_short) {
+  for(i in seq_len(length(iow_main_highways_breakup_geometry))) {
+    if(st_length(iow_main_highways_breakup_geometry[i]) < threshold) {
+      # browser()
+      # i is index of the "too short" segment
+      # look for the indexes of its neighbours
+      index_neighbours <- as.vector(my_neigh[[i]])[-1]
+      
+      # look for shortest neighbours
+      index_shortest_neighbours <- which.min(st_length(iow_main_highways_breakup_geometry[index_neighbours]))
+      
+      # extract the short segment
+      short_segment <- iow_main_highways_breakup_geometry[i]
+      short_segment_neighbour <- iow_main_highways_breakup_geometry[as.vector(my_neigh[[i]])[index_shortest_neighbours + 1]]
+      
+      # exclude them from original linestring
+      iow_main_highways_breakup_geometry <- iow_main_highways_breakup_geometry[-c(i, as.vector(my_neigh[[i]])[index_shortest_neighbours + 1])]
+      
+      # merge them
+      merging_segments <- st_union(short_segment, short_segment_neighbour) %>% st_line_merge()
+      
+      # append them to the structure
+      iow_main_highways_breakup_geometry <- c(iow_main_highways_breakup_geometry, merging_segments)
+      
+      # sort the sfc according to length
+      iow_main_highways_breakup_geometry <- iow_main_highways_breakup_geometry[order(st_length(iow_main_highways_breakup_geometry))]
+      
+      # rebuild the graph structure
+      my_neigh <- st_touches(iow_main_highways_breakup_geometry) %>% graph.adjlist() %>% ego(1)
+      
+      break
+    }
+  }
+  print(sum(st_length(iow_main_highways_breakup_geometry) < threshold))
+  any_segment_too_short <- any(st_length(iow_main_highways_breakup_geometry) < threshold)
+}
+
+# par(mfrow = c(1, 2))
+# hist(log(as.numeric(st_length(iow_main_highways_breakup))))
+# hist(log(as.numeric(st_length(iow_main_highways_breakup_geometry))))
+# par(mfrow = c(1, 2))
+
+# rebuild the sf
+my_sf <- st_sf(
+  tibble(segment_length = st_length(iow_main_highways_breakup_geometry)), 
+  geometry = iow_main_highways_breakup_geometry
+)
+
+# calculate number of car crashes per road segment
+# iow_main_highways_breakup$number_of_car_crashes <- st_nearest_feature(car_crashes_2018_iow, iow_main_highways_breakup) %>% 
+#   factor(levels = seq_len(nrow(iow_main_highways_breakup))) %>% table() %>% as.numeric()
+
+my_sf$number_of_car_crashes <- st_nearest_feature(car_crashes_2018_iow, my_sf) %>% 
+  factor(levels = seq_len(nrow(my_sf))) %>% table() %>% as.numeric()
+
+# my_sf %>% 
+#   mutate(number_of_car_crashes = as.character(number_of_car_crashes)) %>% 
+#   ggplot() + 
+#   geom_sf(data = st_boundary(iow_sf_polygon)) + 
+#   geom_sf(mapping = aes(col = number_of_car_crashes, fill = number_of_car_crashes)) + 
+#   theme_light()
+
+# rebuild the graph structure
+my_graph <- st_touches(my_sf) %>% graph.adjlist() %>% ego(1)
+
+my_sf <- my_sf %>%
+  mutate(
+    empirical_bayes_estimate = map_dbl(
+      seq_len(nrow(.)),
+      empirical_bayes,
+      x = number_of_car_crashes, 
+      l = as.numeric(segment_length), 
+      graph_ego = my_graph
+    )
+  )
+
+p <- ggplot(my_sf) + 
+  geom_sf(data = st_boundary(iow_sf_polygon)) + 
+  geom_sf(aes(col = empirical_bayes_estimate, fill = empirical_bayes_estimate), size = 1.25) +
+  scale_color_distiller(palette = "RdYlGn", direction = -1, trans = "sqrt") +
+  scale_fill_distiller(palette = "RdYlGn", direction = -1, trans = "sqrt") +
+  theme_light() +
+  labs(col = "", fill = "")
+p
+ggsave("presentation/images/empirical_bayes_2.eps", plot = p, device = "eps", width = 10, height = 5.5)
