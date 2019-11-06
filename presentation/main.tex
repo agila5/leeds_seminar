@@ -105,7 +105,7 @@ This is a graphical representation of the main roads in the Isle of Wight.
 \end{frame}
 
 \begin{frame}
-  \frametitle{Representing networks as graphs}
+  \frametitle{Representing street networks as graphs}
   \vspace{-0.75cm}
   \begin{itemize}
     \setlength\itemsep{1em}
@@ -267,7 +267,7 @@ This is the result. You should note that we excluded all car crashes that were f
 \begin{frame}{Problems with the raw counts measure}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item There are some clear problems with the previous risk measure and, the most important one, is that we are comparing ways with very different length (which is what we are going to call \textit{exposure}). 
+	\item There are some clear problems with the previous risk measure and, the most important one, is that we are comparing ways with very different length (i.e. different \textit{exposure}). 
 	\item There are two possible solutions: 1) rebuild the network cutting and pasting ways in such a way that they all have approximately the same length; 2) estimate the number of car crashes per meter. 
 	\item For the moment we are working with the second solution since the other one is much more difficult to implement. 
 \end{itemize}
@@ -286,7 +286,7 @@ This is the result and, then again, there are some obvious problems: there are a
 \vspace{-0.75cm}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item Let $n$ be the number of edges in the street network, $x_i, \ i = 1,\dots,n$ the number of car crashes occurring in each edge and $l_i, \ i = 1\dots n$ the length of each way. The ratio 
+	\item Let $n$ be the number of (non overlapping) edges in the street network, $x_i, \ i = 1,\dots,n$ the number of car crashes occurring in each edge and $l_i, \ i = 1\dots n$ the length of each way. The ratio 
 	\[
 	y_i = \frac{x_i}{l_i}, \ i = 1, \dots, n
 	\] 
@@ -315,7 +315,7 @@ This is the result and, then again, there are some obvious problems: there are a
 
 \begin{frame}{Smoothing on a linear network}
 \vspace{-0.25cm}
-This is the result with $p = 6$. Obviously this procedure has several drawbacks but at least now it's possible to extract some information from that plot. 
+This is the result with $p = 6$ and now it's possible to extract some information from the plot. 
 \begin{figure}
 	\centering
 	\includegraphics[width=\linewidth]{images/car_crashes_per_meter_smooth6}
@@ -331,12 +331,156 @@ This is the same procedure applied to the street network without the cleaning an
 \end{figure}
 \end{frame}
 
+\begin{frame}{Drawbacks}
+\vspace{-0.75cm}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Nevertheless, even if we work with a proper and clean network, the smoothing procedure has several drawbacks since it is nothing more than an exploratory data analysis (EDA) procedure. 
+	
+	\item We did not define any precise statistical model which implies that we can't quantify any uncertainty measure on the risk indexes. Moreover, inference and testing procedures are not clearly defined. 
+	
+	\item In the last part of this seminar I'm going to present a statistical approach for the estimation of risk index on a street network which is based on \alert{Emprical Bayes Estimators}. 	
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Setting up the terminology}
+\vspace{-0.75cm}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item  Let $n$ be the number of (non overlapping) edges in the street network and $x_i, \ i = 1,\dots,n$ be the number of car crashes occurring in each edge. We assume that
+	\[
+	x_i \sim \text{Poisson}(l_i\theta_i)
+	\] 	
+	where $l_i, \ i = 1\dots n$ represents the exposure on each segment and $\theta_i, \ i = 1, \dots, n$ is the \alert{risk measure of the $i$th street segment}. 
+	\item There are several possible ways to measure the exposure of each segment and, for the moment, we will take $l_i$ as the length of the $i$th segment. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Setting up the terminology (cont)}
+\vspace{-0.75cm}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item We can now define 
+	\[
+	y_{i} = \frac{x_i}{l_i}, \ i = 1, \dots, n
+	\]  
+	which, under the previous assumptions, represent the maximum likelihood estimates of $\theta_i$. It's easy to prove that $\mathbb{E}[y_i] = \theta_i$ (i.e. unbiased estimator) and $\text{var}[y_i] = \frac{\theta_i}{l_i}$.
+	
+	\item This implies that the smaller is the value of $l_i$, the more inaccurate is the estimate $y_i$. Moreover, it's possible to prove that, taken together, $\lbrace y_i, \ i = 1,\dots,n\rbrace$ are not necessarily the best estimates of $\lbrace \theta_i, \ i = 1, \dots, n \rbrace$.   
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Classical and Bayesian statistics}
+\vspace{-0.75cm}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item The classical statistical setting is based on the assumption that $\theta_i$, the parameter that we want to estimate, is a fixed and unknown quantity and all the inferential procedures are based on the \textit{repeated sampling principle} (i.e. we imagine it's possible to get other samples $\lbrace x_i, \ i = 1,\dots,n \rbrace$ which are generated under the same random mechanism). 
+	\item Instead, in a bayesian framework, the sample is fixed while the parameters $\theta_i$ represent a random quantity that should be specified as a \textit{random variable} with its \textit{prior distribution}. We can include in the \textit{prior distirbution} all the previous knowledge we have on $\theta_{i}$, like its mean, median, modal quantity or range of variation. The statisticians then use the Bayes theorem to combine the 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Setting up the terminology (cont)}
+\vspace{-0.75cm}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Now we are going to adopt a bayesian mindset specifying $\theta_i$ as a random variable with mean $\mu_i$ and variance $\sigma^2_i$ without any explicit functional form. 
+	
+	\item So this is the framework 
+	\[
+	x_i | \theta_i \sim \text{Poisson}(l_i\theta_i) \text{ and } \theta_i \sim (\mu_i, \sigma^2_i)
+	\]  
+	and, if we define $y_i$ in the same manner as before, then $\mathbb{E}[y_i | \theta_i] = \theta_i$ and $\text{var}[y_i | \theta_i] = \frac{\theta_{i}}{l_i}$. By the law of iterated expected values 
+	\[
+	\mathbb{E}[y_i] = \mathbb{E}[\mathbb{E}[y_i|\theta_{i}]] = \mu_i
+	\]
+	and
+	\[
+	\text{var}[y_i] = \text{var}[\mathbb{E}[y_i | \theta_i]] + \mathbb{E}[\text{var}[y_i|\theta_{i}]] = \sigma^2_i + \frac{\mu_i}{l_i} = \nu_i
+	\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Shrinkage Estimator}
+\vspace{-0.75cm}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item It's possible to prove that the best bayesian estimator for $\lbrace \theta_{i}, \ i = 1, \dots, n \rbrace$ is given by the \alert{shrinkage estimator}:
+	\[
+	\hat{\theta_i} = P_iy_i + (1 - P_i)\mu_i, \ i = 1, \dots, n
+	\]
+	where $P_i = \frac{\sigma^2_i}{\nu_i}$. 
+	
+	\item We can see that $\hat{\theta_i}$ is a weighted average of the prior mean, $\mu_i$ and $y_i$, the raw estimate for $\theta_{i}$. The weights, $P_i$, are directly proportional to $\frac{1}{l_i}$ which means that the grater is the exposure and the greater is the weight linked to $y_i$. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{An Empirical Bayes Approach}
+\vspace{-0.75cm}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item There are two problems now. The first problem is that the number of parameters in the model is greater than the number of edges in the network (which makes the model unidentifiable). We can solve it by assuming that $\mu_i = \mu \ \forall i$ and $\sigma^2_i = \sigma^2 \ \forall i$. 
+	
+	\item The second problem is that we don't know $\mu$ and $\sigma^2$ but, using the James-Stein approach, we can estimate them using the marginal distribution of $Y$ (since we proved that $\mathbb{E}[y_i] = \mu$ and $\text{var}[y_i] = \sigma^2$). This is called an Empirical Bayes Approach. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{An Empirical Bayes Approach (cont)}
+\vspace{-0.75cm}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item If we don't specify any functional form for the prior of $\theta$, we can still use the methods of moment for the estimation of $\mu$ and $\sigma^2$. 
+	
+	\item We will use
+	\[
+	\begin{split}
+		& \tilde{\mu} = \frac{\sum_{i=1}^{n} l_iy_i}{\sum_{i=1}^n l_i}, \\
+		& \tilde{\sigma}^2 = \max\left\lbrace 0, S^2 - \frac{\tilde{\mu}}{\bar{m}}\right\rbrace,
+	\end{split}
+	\]
+	and
+	\[
+	\tilde{P}_i = \frac{\tilde{\sigma}^2}{\tilde{\sigma}^2 + \frac{\tilde{\mu}}{m_i}} 
+	\]
+	and the empirical version of the shrinkage estimator is
+	\[
+	\hat{\theta}_i = \tilde{P}_iy_i + (1 - \tilde{P}_i)\tilde{\mu}
+	\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{A spatial version of the Empirical Bayes}
+\vspace{-0.75cm}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item The problem now is that we are completely ignoring the spatial component of the model (i.e. if we randomly shuffle all the counts $x_i$ the $\hat{\theta}_i$ doesn't change). 
+	
+	\item We can fix that using the same approach as before, i.e. we can define a set $\delta_{i, p}$ which represent all the neghbours of the $i$th edge up to order $p$ and modify all the previous formula just to take into account just the edges included in $\delta_{i, p}$. For example
+	\[
+	\tilde{\mu}_{i, 1} = \frac{\sum_{j \in \delta_{i, p}} y_jl_j}{\sum_{j \in \delta_{i, p}} l_j}
+	\]
+	is the empirical estimate of $\mu$ for the $i$th edge considering all neighbours up to order 1. 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{How to choose $p$}
+ABC
+\end{frame}
+
+\begin{frame}{Future Work}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Redefine $l_i$
+	\item Consider the risk of the estimation of $l_i$
+\end{itemize}
+\end{frame}
+
 \begin{frame}
 \frametitle{TODO}
 \begin{itemize}
 	\item Add citations and fix bibliography
 	\item Add credits to memes, OSM and beamer theme
 	\item highlight important word (i.e. \alert{ABC})
+	\item RSP meme with hyperref
 \end{itemize}
 \end{frame}
 \end{document}
