@@ -1,0 +1,533 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{baddeley2010spatial}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{8}{}{%
+        {{hash=505e004b984e36de2ba68eb17b3f5025}{%
+           family={Baddeley},
+           familyi={B\bibinitperiod},
+           given={Adrian},
+           giveni={A\bibinitperiod}}}%
+        {{hash=cbe4738f6c39bbd9e9584aff0c2d6d9d}{%
+           family={Berman},
+           familyi={B\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod}}}%
+        {{hash=04c8e66060f7f5ff60fcfab19a00fd67}{%
+           family={Fisher},
+           familyi={F\bibinitperiod},
+           given={Nicholas\bibnamedelima I},
+           giveni={N\bibinitperiod\bibinitdelim I\bibinitperiod}}}%
+        {{hash=d494cc8967d6f352fbfd3082068b7a0f}{%
+           family={Hardegen},
+           familyi={H\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod}}}%
+        {{hash=b041f104ff26fa9f50edd1fb68c1e72e}{%
+           family={Milne},
+           familyi={M\bibinitperiod},
+           given={Robin\bibnamedelima K},
+           giveni={R\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=97ec01b04a02fdc2f5253fc6a919a0d3}{%
+           family={Schuhmacher},
+           familyi={S\bibinitperiod},
+           given={Dominic},
+           giveni={D\bibinitperiod}}}%
+        {{hash=c67585559bd204427916692089dc83c7}{%
+           family={Shah},
+           familyi={S\bibinitperiod},
+           given={Rohan},
+           giveni={R\bibinitperiod}}}%
+        {{hash=e2fbbb08081f8155321b4db7d59ba81c}{%
+           family={Turner},
+           familyi={T\bibinitperiod},
+           given={Rolf},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{publisher}{2}{%
+        {The Institute of Mathematical Statistics}%
+        {the Bernoulli Society}%
+      }
+      \strng{namehash}{4272a6f32835e00bd048cca222eb6d80}
+      \strng{fullhash}{447a1cac883b9b97b408ee234e63def0}
+      \strng{bibnamehash}{4272a6f32835e00bd048cca222eb6d80}
+      \strng{authorbibnamehash}{4272a6f32835e00bd048cca222eb6d80}
+      \strng{authornamehash}{4272a6f32835e00bd048cca222eb6d80}
+      \strng{authorfullhash}{447a1cac883b9b97b408ee234e63def0}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Electronic Journal of Statistics}
+      \field{title}{Spatial logistic regression and change-of-support in Poisson point processes}
+      \field{volume}{4}
+      \field{year}{2010}
+      \true{nocite}
+      \field{pages}{1151\bibrangedash 1201}
+      \range{pages}{51}
+    \endentry
+    \entry{spatstat}{book}{}
+      \name{author}{3}{}{%
+        {{hash=505e004b984e36de2ba68eb17b3f5025}{%
+           family={Baddeley},
+           familyi={B\bibinitperiod},
+           given={Adrian},
+           giveni={A\bibinitperiod}}}%
+        {{hash=bd9a14afe386e1345b2bc516ddd6fa8e}{%
+           family={Rubak},
+           familyi={R\bibinitperiod},
+           given={Ege},
+           giveni={E\bibinitperiod}}}%
+        {{hash=e2fbbb08081f8155321b4db7d59ba81c}{%
+           family={Turner},
+           familyi={T\bibinitperiod},
+           given={Rolf},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {London}%
+      }
+      \list{publisher}{2}{%
+        {Chapman}%
+        {Hall/CRC Press}%
+      }
+      \strng{namehash}{e5c675bdd9bc8ed2037b7e7f0b95ba4e}
+      \strng{fullhash}{e5c675bdd9bc8ed2037b7e7f0b95ba4e}
+      \strng{bibnamehash}{e5c675bdd9bc8ed2037b7e7f0b95ba4e}
+      \strng{authorbibnamehash}{e5c675bdd9bc8ed2037b7e7f0b95ba4e}
+      \strng{authornamehash}{e5c675bdd9bc8ed2037b7e7f0b95ba4e}
+      \strng{authorfullhash}{e5c675bdd9bc8ed2037b7e7f0b95ba4e}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Spatial Point Patterns: Methodology and Applications with {R}}
+      \field{year}{2015}
+      \true{nocite}
+    \endentry
+    \entry{borgons}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=6ec0f89bf6d1440cb9c8758e3753e689}{%
+           family={Borgoni},
+           familyi={B\bibinitperiod},
+           given={Riccardo},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{6ec0f89bf6d1440cb9c8758e3753e689}
+      \strng{fullhash}{6ec0f89bf6d1440cb9c8758e3753e689}
+      \strng{bibnamehash}{6ec0f89bf6d1440cb9c8758e3753e689}
+      \strng{authorbibnamehash}{6ec0f89bf6d1440cb9c8758e3753e689}
+      \strng{authornamehash}{6ec0f89bf6d1440cb9c8758e3753e689}
+      \strng{authorfullhash}{6ec0f89bf6d1440cb9c8758e3753e689}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{4}
+      \field{title}{Stime di tassi di occorrenza basate sull’approccio Empirico Bayesiano}
+      \field{year}{2019}
+      \true{nocite}
+    \endentry
+    \entry{clayton1987empirical}{article}{}
+      \name{author}{2}{}{%
+        {{hash=71477ff5281ea7e7dbf77a29c316ee8f}{%
+           family={Clayton},
+           familyi={C\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=0005aa0d4776eb948e0443d6868db3ca}{%
+           family={Kaldor},
+           familyi={K\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {JSTOR}%
+      }
+      \strng{namehash}{458f1c4ac5e85f8de80be6989c4adda3}
+      \strng{fullhash}{458f1c4ac5e85f8de80be6989c4adda3}
+      \strng{bibnamehash}{458f1c4ac5e85f8de80be6989c4adda3}
+      \strng{authorbibnamehash}{458f1c4ac5e85f8de80be6989c4adda3}
+      \strng{authornamehash}{458f1c4ac5e85f8de80be6989c4adda3}
+      \strng{authorfullhash}{458f1c4ac5e85f8de80be6989c4adda3}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Biometrics}
+      \field{title}{Empirical Bayes estimates of age-standardized relative risks for use in disease mapping}
+      \field{year}{1987}
+      \true{nocite}
+      \field{pages}{671\bibrangedash 681}
+      \range{pages}{11}
+    \endentry
+    \entry{efron1973stein}{article}{}
+      \name{author}{2}{}{%
+        {{hash=5470455fc7dceb3ccf6db38cb22a113d}{%
+           family={Efron},
+           familyi={E\bibinitperiod},
+           given={Bradley},
+           giveni={B\bibinitperiod}}}%
+        {{hash=822c8f70fc11e57b2430a566676cbcf6}{%
+           family={Morris},
+           familyi={M\bibinitperiod},
+           given={Carl},
+           giveni={C\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor \& Francis Group}%
+      }
+      \strng{namehash}{05a5d797b9c4e693cf68d8b7d36ce57a}
+      \strng{fullhash}{05a5d797b9c4e693cf68d8b7d36ce57a}
+      \strng{bibnamehash}{05a5d797b9c4e693cf68d8b7d36ce57a}
+      \strng{authorbibnamehash}{05a5d797b9c4e693cf68d8b7d36ce57a}
+      \strng{authornamehash}{05a5d797b9c4e693cf68d8b7d36ce57a}
+      \strng{authorfullhash}{05a5d797b9c4e693cf68d8b7d36ce57a}
+      \field{sortinit}{E}
+      \field{sortinithash}{c554bd1a0b76ea92b9f105fe36d9c7b0}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the American Statistical Association}
+      \field{number}{341}
+      \field{title}{Stein's estimation rule and its competitors—an empirical Bayes approach}
+      \field{volume}{68}
+      \field{year}{1973}
+      \true{nocite}
+      \field{pages}{117\bibrangedash 130}
+      \range{pages}{14}
+    \endentry
+    \entry{james1992estimation}{incollection}{}
+      \name{author}{2}{}{%
+        {{hash=7e6824f8d67a0e956aae72188825dbf2}{%
+           family={James},
+           familyi={J\bibinitperiod},
+           given={William},
+           giveni={W\bibinitperiod}}}%
+        {{hash=6a2cfb50317c65fe2e57051d99c0380c}{%
+           family={Stein},
+           familyi={S\bibinitperiod},
+           given={Charles},
+           giveni={C\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{e9ab503db25db040ef1ea3a8000ed4a9}
+      \strng{fullhash}{e9ab503db25db040ef1ea3a8000ed4a9}
+      \strng{bibnamehash}{e9ab503db25db040ef1ea3a8000ed4a9}
+      \strng{authorbibnamehash}{e9ab503db25db040ef1ea3a8000ed4a9}
+      \strng{authornamehash}{e9ab503db25db040ef1ea3a8000ed4a9}
+      \strng{authorfullhash}{e9ab503db25db040ef1ea3a8000ed4a9}
+      \field{sortinit}{J}
+      \field{sortinithash}{c45040a764d616897e7f5b30174d7b92}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Breakthroughs in statistics}
+      \field{title}{Estimation with quadratic loss}
+      \field{year}{1992}
+      \true{nocite}
+      \field{pages}{443\bibrangedash 460}
+      \range{pages}{18}
+    \endentry
+    \entry{stats19}{article}{}
+      \name{author}{6}{}{%
+        {{hash=c54b1567b34d5e4a29a0751f42d1e429}{%
+           family={Lovelace},
+           familyi={L\bibinitperiod},
+           given={Robin},
+           giveni={R\bibinitperiod}}}%
+        {{hash=80d1fa3cf3d4c60b54d4826324e6699a}{%
+           family={Morgan},
+           familyi={M\bibinitperiod},
+           given={Malcolm},
+           giveni={M\bibinitperiod}}}%
+        {{hash=273157711def3fd55285a028e8326949}{%
+           family={Hama},
+           familyi={H\bibinitperiod},
+           given={Layik},
+           giveni={L\bibinitperiod}}}%
+        {{hash=0569f918b08379ff2041ba6b228f016e}{%
+           family={Padgham},
+           familyi={P\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod}}}%
+        {{hash=aaa9a176562199e4b4f549000e0cea5c}{%
+           family={Ranzolin},
+           familyi={R\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=9f87d183e042ee0f513b24a72902b550}{%
+           family={Sparks},
+           familyi={S\bibinitperiod},
+           given={Adam},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {The Open Journal}%
+      }
+      \strng{namehash}{e6d8f3d996b69d3bec3f07d9bbb1977a}
+      \strng{fullhash}{d70846f994f0bdeee5025771d348bb0a}
+      \strng{bibnamehash}{e6d8f3d996b69d3bec3f07d9bbb1977a}
+      \strng{authorbibnamehash}{e6d8f3d996b69d3bec3f07d9bbb1977a}
+      \strng{authornamehash}{e6d8f3d996b69d3bec3f07d9bbb1977a}
+      \strng{authorfullhash}{d70846f994f0bdeee5025771d348bb0a}
+      \field{sortinit}{L}
+      \field{sortinithash}{dad3efd0836470093a7b4a7bb756eb8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Journal of Open Source Software}
+      \field{month}{1}
+      \field{number}{33}
+      \field{title}{stats 19: A package for working with open road crash data}
+      \field{volume}{4}
+      \field{year}{2019}
+      \true{nocite}
+      \field{pages}{1181}
+      \range{pages}{1}
+    \endentry
+    \entry{WinNT}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=3ed6fbbfb2ccb010208c086b75d3fc70}{%
+           family={Manuals},
+           familyi={M\bibinitperiod},
+           given={Floss},
+           giveni={F\bibinitperiod}}}%
+      }
+      \strng{namehash}{3ed6fbbfb2ccb010208c086b75d3fc70}
+      \strng{fullhash}{3ed6fbbfb2ccb010208c086b75d3fc70}
+      \strng{bibnamehash}{3ed6fbbfb2ccb010208c086b75d3fc70}
+      \strng{authorbibnamehash}{3ed6fbbfb2ccb010208c086b75d3fc70}
+      \strng{authornamehash}{3ed6fbbfb2ccb010208c086b75d3fc70}
+      \strng{authorfullhash}{3ed6fbbfb2ccb010208c086b75d3fc70}
+      \field{sortinit}{M}
+      \field{sortinithash}{2e5c2f51f7fa2d957f3206819bf86dc3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{ http://write.flossmanuals.net/openstreetmap/understanding-the-openstreetmap-data-model/ }}
+      \field{note}{Accessed: 2019-10-24}
+      \field{title}{The OpenStreetMap data model}
+      \true{nocite}
+    \endentry
+    \entry{marshall1991mapping}{article}{}
+      \name{author}{1}{}{%
+        {{hash=12ca0f477db075cb839a7d9938d590b1}{%
+           family={Marshall},
+           familyi={M\bibinitperiod},
+           given={Roger\bibnamedelima J},
+           giveni={R\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley Online Library}%
+      }
+      \strng{namehash}{12ca0f477db075cb839a7d9938d590b1}
+      \strng{fullhash}{12ca0f477db075cb839a7d9938d590b1}
+      \strng{bibnamehash}{12ca0f477db075cb839a7d9938d590b1}
+      \strng{authorbibnamehash}{12ca0f477db075cb839a7d9938d590b1}
+      \strng{authornamehash}{12ca0f477db075cb839a7d9938d590b1}
+      \strng{authorfullhash}{12ca0f477db075cb839a7d9938d590b1}
+      \field{sortinit}{M}
+      \field{sortinithash}{2e5c2f51f7fa2d957f3206819bf86dc3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the Royal Statistical Society: Series C (Applied Statistics)}
+      \field{number}{2}
+      \field{title}{Mapping disease and mortality rates using empirical Bayes estimators}
+      \field{volume}{40}
+      \field{year}{1991}
+      \true{nocite}
+      \field{pages}{283\bibrangedash 294}
+      \range{pages}{12}
+    \endentry
+    \entry{OpenStreetMap}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=602f2591276bacf4409eba4a627cff11}{%
+           family={{OpenStreetMap contributors}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{602f2591276bacf4409eba4a627cff11}
+      \strng{fullhash}{602f2591276bacf4409eba4a627cff11}
+      \strng{bibnamehash}{602f2591276bacf4409eba4a627cff11}
+      \strng{authorbibnamehash}{602f2591276bacf4409eba4a627cff11}
+      \strng{authornamehash}{602f2591276bacf4409eba4a627cff11}
+      \strng{authorfullhash}{602f2591276bacf4409eba4a627cff11}
+      \field{sortinit}{O}
+      \field{sortinithash}{ff8d4eeb5101e3cf3809959b3592d942}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{ https://www.openstreetmap.org }}
+      \field{title}{{Planet dump retrieved from https://planet.osm.org }}
+      \field{year}{2017}
+      \true{nocite}
+    \endentry
+    \entry{osmdata}{article}{}
+      \name{author}{4}{}{%
+        {{hash=0569f918b08379ff2041ba6b228f016e}{%
+           family={Padgham},
+           familyi={P\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod}}}%
+        {{hash=a832745f10ec3e0eb6d0003739d95b38}{%
+           family={Rudis},
+           familyi={R\bibinitperiod},
+           given={Bob},
+           giveni={B\bibinitperiod}}}%
+        {{hash=c54b1567b34d5e4a29a0751f42d1e429}{%
+           family={Lovelace},
+           familyi={L\bibinitperiod},
+           given={Robin},
+           giveni={R\bibinitperiod}}}%
+        {{hash=7c835350492fb2e3b97ce81bce7e5ed4}{%
+           family={Salmon},
+           familyi={S\bibinitperiod},
+           given={Maëlle},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {The Open Journal}%
+      }
+      \strng{namehash}{8eef053d6a79cfd96e6653b6968fb8c4}
+      \strng{fullhash}{4c3bba328e94c3fc258e4f5f2814b0c5}
+      \strng{bibnamehash}{8eef053d6a79cfd96e6653b6968fb8c4}
+      \strng{authorbibnamehash}{8eef053d6a79cfd96e6653b6968fb8c4}
+      \strng{authornamehash}{8eef053d6a79cfd96e6653b6968fb8c4}
+      \strng{authorfullhash}{4c3bba328e94c3fc258e4f5f2814b0c5}
+      \field{sortinit}{P}
+      \field{sortinithash}{bb5b15f2db90f7aef79bb9e83defefcb}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The Journal of Open Source Software}
+      \field{month}{6}
+      \field{number}{14}
+      \field{title}{osmdata}
+      \field{volume}{2}
+      \field{year}{2017}
+      \true{nocite}
+    \endentry
+    \entry{sf}{article}{}
+      \name{author}{1}{}{%
+        {{hash=422fc79d05d5bcdcc598a0a7c6f95159}{%
+           family={Pebesma},
+           familyi={P\bibinitperiod},
+           given={Edzer},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{422fc79d05d5bcdcc598a0a7c6f95159}
+      \strng{fullhash}{422fc79d05d5bcdcc598a0a7c6f95159}
+      \strng{bibnamehash}{422fc79d05d5bcdcc598a0a7c6f95159}
+      \strng{authorbibnamehash}{422fc79d05d5bcdcc598a0a7c6f95159}
+      \strng{authornamehash}{422fc79d05d5bcdcc598a0a7c6f95159}
+      \strng{authorfullhash}{422fc79d05d5bcdcc598a0a7c6f95159}
+      \field{sortinit}{P}
+      \field{sortinithash}{bb5b15f2db90f7aef79bb9e83defefcb}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{{The R Journal}}
+      \field{number}{1}
+      \field{title}{{Simple Features for R: Standardized Support for Spatial Vector Data}}
+      \field{volume}{10}
+      \field{year}{2018}
+      \true{nocite}
+      \field{pages}{439\bibrangedash 446}
+      \range{pages}{8}
+    \endentry
+    \entry{R}{manual}{}
+      \name{author}{1}{}{%
+        {{hash=dcdebb6b35bff7c0568bf8c50ef8626d}{%
+           family={{R Core Team}},
+           familyi={R\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Vienna, Austria}%
+      }
+      \list{organization}{1}{%
+        {R Foundation for Statistical Computing}%
+      }
+      \strng{namehash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{fullhash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{bibnamehash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{authorbibnamehash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{authornamehash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \strng{authorfullhash}{dcdebb6b35bff7c0568bf8c50ef8626d}
+      \field{sortinit}{R}
+      \field{sortinithash}{b9c68a358aea118dfa887b6e902414a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{R: A Language and Environment for Statistical Computing}
+      \field{year}{2019}
+      \true{nocite}
+    \endentry
+    \entry{stplanr}{article}{}
+      \name{author}{2}{}{%
+        {{hash=b263e3d5a1873c6f50914070ad1ea6bf}{%
+           family={{Robin Lovelace}},
+           familyi={R\bibinitperiod}}}%
+        {{hash=8842350cddd564cba133c86bca2ff7d4}{%
+           family={{Richard Ellison}},
+           familyi={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{6ab19f684539db1d3917231693e44405}
+      \strng{fullhash}{6ab19f684539db1d3917231693e44405}
+      \strng{bibnamehash}{6ab19f684539db1d3917231693e44405}
+      \strng{authorbibnamehash}{6ab19f684539db1d3917231693e44405}
+      \strng{authornamehash}{6ab19f684539db1d3917231693e44405}
+      \strng{authorfullhash}{6ab19f684539db1d3917231693e44405}
+      \field{sortinit}{R}
+      \field{sortinithash}{b9c68a358aea118dfa887b6e902414a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{{The R Journal}}
+      \field{number}{2}
+      \field{title}{{stplanr: A Package for Transport Planning}}
+      \field{volume}{10}
+      \field{year}{2018}
+      \true{nocite}
+    \endentry
+    \entry{ggplot2}{book}{}
+      \name{author}{1}{}{%
+        {{hash=1d0f6977ce2d043e298a59a1cd75b7ef}{%
+           family={Wickham},
+           familyi={W\bibinitperiod},
+           given={Hadley},
+           giveni={H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer-Verlag New York}%
+      }
+      \strng{namehash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{fullhash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{bibnamehash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{authorbibnamehash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{authornamehash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \strng{authorfullhash}{1d0f6977ce2d043e298a59a1cd75b7ef}
+      \field{sortinit}{W}
+      \field{sortinithash}{1af34bd8c148ffb32de1494636b49713}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{ggplot2: Elegant Graphics for Data Analysis}
+      \field{year}{2016}
+      \true{nocite}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

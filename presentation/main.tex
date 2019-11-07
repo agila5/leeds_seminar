@@ -1,9 +1,14 @@
 \documentclass[c,10pt,pdftex]{beamer}
 \usepackage[T1]{fontenc}
-\usepackage[utf8x]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 
-\usepackage{ucs} % for utf8x
+\hypersetup{
+  colorlinks=true,
+  urlcolor=blue
+}
+
+% \usepackage{ucs} % for utf8x
 
 \usepackage{graphicx}
 
@@ -11,7 +16,12 @@
 \usepackage{algorithm2e}
 \usepackage{algorithmic}
 \usepackage{float}
+
+\usepackage[autostyle, italian=guillemets]{csquotes}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{seminar.bib}
 \usetheme{tb}
+
 
 \title{Transport networks and road safety}
 
@@ -31,15 +41,19 @@
 	\item I'm Andrea Gilardi, a Ph.D. student in Statistics at the University of Milan - Bicocca. 
 	\item My main research interests lie in the field of spatial and spatiotemporal statistics, with a particular focus on point pattern events on a linear network. I really love coding in R. 
 	
-	\item Now I'm in Leeds (I will leave next week unfortunately) working with Robin Lovelace on a review of existing packages for spatial network analysis in R (like \texttt{stplanr}) to improve my knowledge on several spatial topics and apply the methods to road safety research
+	\item Now I'm in Leeds (I will leave next week unfortunately) working with Robin Lovelace on a review of existing packages for spatial network analysis in R (like \texttt{stplanr}) improving my knowledge on several spatial topics and applying statistical methods to road safety research
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Overview of the seminar}
-\begin{enumerate}
-	\item A
-\end{enumerate}
+\begin{itemize}
+	\item In the first part of the seminar I will present you the basics idea behind the graph representation of a street network. We will see three common pitfalls on OpenStreetMap highway data and how to solve them. 
+	
+	\item In the second part I will show you some methods that we used to explore the distribution of car crashes occurred in 2018 on the street network of the Isle of Wight.
+	
+	\item In the third and last part of this seminar I will present you an Empirical Bayes methodology for the estimation of a road risk index on a street network.  
+\end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -47,9 +61,9 @@
 \vspace{-0.75cm}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item Informally, a \textbf{Point Process} is a random mechanism whose outcomes are \textbf{Point Patterns}, i.e. a (finite) sequence of points in the space. 
+	\item Informally, a Point Process is a random mechanism whose outcomes are Point Patterns, i.e. a (finite) sequence of points in the space. 
 	
-	\item Classical examples of point processes are: tree locations in a forest (the classic swedish pines data), animal nesting sites, ambulance interventions or, as  in this seminar, car crashes. 
+	\item Classical examples of point processes are: tree locations in a forest (the classic swedish pines data), animal nesting sites, ambulance interventions or, as  in this seminar, \alert{car crashes}. 
 	
 	\item We will use these data to formalize the first steps we took towards the definition of a precise model that can be used to locate the most dangerous locations for car crashes (i.e. the black spots). 
 \end{itemize}
@@ -60,7 +74,7 @@
 \vspace{-0.75cm}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item In the following part of this seminar, we will analyze data for car crashes that occurred in the Isle of Wight (UK) during 2018. 
+	\item In the following part of this seminar, we will analyze the data of all car crashes that occurred in the \alert{Isle of Wight (UK) during 2018}. 
 	
 	\item We downloaded the data using the \texttt{stats19} package, which is a tool to help download, process and analyse the UK road collision data collected using the 'STATS19' form. 
 	
@@ -81,7 +95,7 @@ This is a graphical representation of the car crashes occurred in the Isle of Wi
 \begin{frame}
 \frametitle{Point Processes on a Street Network}
 \vspace{-0.25cm}
-Car crashes represent a classical example of a point process occurring on a linear network and the usual statistical techniques (as the following quadratcount) are not valid. 
+Car crashes represent a classical example of a \alert{point process occurring on a linear network}. The usual statistical techniques (such as the following quadratcount) are not valid. 
 \vspace{-0.5cm}
 \begin{figure}
 	\centering
@@ -94,7 +108,7 @@ Car crashes represent a classical example of a point process occurring on a line
 \vspace{-0.75cm}
 \begin{itemize}
   \setlength\itemsep{1em}
-  \item The road network we use is built using OpenStreetMap data. 
+  \item The road network we use is built using \alert{OpenStreetMap} data. 
   \item OpenStreetMap is a project that aims at building a free and editable map of the World with an open-content license. 
   \item The basic components of OpenStreetMap data are called \textit{elements} and they consist of: 
   \begin{itemize}
@@ -121,7 +135,7 @@ This is a graphical representation of the main roads in the Isle of Wight.
   \vspace{-0.75cm}
   \begin{itemize}
     \setlength\itemsep{1em}
-    \item Typically roads are represented purely as geographic objects, but they are also graphs
+    \item Typically roads are represented purely as geographic objects, but they are also \alert{graphs}
     \item A few ways of representing spatial networks have been developed, including in the R package \texttt{stplanr}
     \item That is, roughly speaking, how Robin and I met
   \end{itemize}
@@ -146,7 +160,7 @@ This is a graphical representation of the main roads in the Isle of Wight.
   \vspace{-0.75cm}
   \begin{itemize}
     \setlength\itemsep{1em}
-    \item Broadly speaking, let's say that a street network is a network whose nodes and edges are associated with geographical elements in the space. 
+    \item Broadly speaking, let's say that a \alert{street network} is a graph whose nodes and edges are associated with geographical elements in the space. 
     \item In the \texttt{stplanr} representation of a street network, the edges are the ways that were download from OSM while the vertexes are the starting and ending node of each way. 
     \item This representation implies that two or more edges are \textit{connected} if and only if they share one or more boundary point. 
   \end{itemize}
@@ -155,7 +169,7 @@ This is a graphical representation of the main roads in the Isle of Wight.
 \begin{frame}
   \frametitle{Problems...}
   \vspace{-0.5cm}
-  Theories and definitions are fine but obviously the data we face in the wild world is quite different. We will discuss three probems: \textbf{roundabouts} (i.e. circular ways), \textbf{overpasses} (i.e. intersecting ways that are not really connected due to a vertical grade of separation) and (some) \textbf{street intersections}.  
+  Theories and definitions are fine but obviously the data we face in the wild world is quite different. We will discuss three probems: \alert{roundabouts} (i.e. circular ways), \alert{overpasses} (i.e. intersecting ways that are not really connected due to a vertical grade of separation) and (some) \alert{street intersections}.  
   \begin{columns}
   	\begin{column}{0.5\linewidth}
   		\begin{figure}
@@ -177,8 +191,8 @@ This is a graphical representation of the main roads in the Isle of Wight.
 \begin{frame}
   \frametitle{Roundabouts, i.e. circular ways}
   \vspace{-0.25cm}
-  The roundabout on the left is unroutable by \texttt{stplanr}-definition of spatial network since the roundabout is not connected to the other edges.  
-  \vspace{-0.55cm}
+  The street network on the left is unroutable by \texttt{stplanr}-definition since the roundabout is not connected to the other edges.  
+  \vspace{-0.25cm}
   \begin{columns}
     \begin{column}{0.5\linewidth}
       \begin{figure}
@@ -200,7 +214,7 @@ This is a graphical representation of the main roads in the Isle of Wight.
 \begin{frame}
 \frametitle{Bridges, overpasses and underpasses}
 \vspace{-0.75cm}
-Even if we break up a street network (unroutable on the left) we must be sure  not to ruin overpasses and underpasses relations. 
+Even if we break up a street network we must be sure not to ruin overpasses and underpasses relations. 
 \begin{columns}
 	\begin{column}{0.5\linewidth}
 		\begin{figure}
@@ -244,7 +258,7 @@ There are also some cases where two streets intersects and they don't share any 
 \begin{frame}
 \frametitle{Fixing the street networks}
 \vspace{-0.25cm}
-We developed a new function (called \texttt{rnet\_breakup\_vertices} and stored in \texttt{stplanr} package) to fix all these problems and this is the result. 
+We developed a new function (called \texttt{rnet\_breakup\_vertices} and stored in \texttt{stplanr} package) to fix all these problems. This is the result. 
 \begin{figure}
 	\centering
 	\includegraphics[width=\linewidth]{images/breaking_network}
@@ -252,17 +266,12 @@ We developed a new function (called \texttt{rnet\_breakup\_vertices} and stored 
 \end{frame}
 
 \begin{frame}
-\frametitle{Modeling of crashes on street networks}
-Summary of the models
-\end{frame}
-
-\begin{frame}
 \frametitle{Counting crashes on street networks}
 \vspace{-0.75cm}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item Following the same ideas behind the quadratcounts on the plane (and some statistical theories) we wrote a few function to count the number of car crashes occurring on each edge of the street network. 
-	\item R can only represent exactly integers numbers and fractions whose denominator is a power of two (source), so none of the car crashes (whose coordinates are represented as double numbers with a 53 binary digits accuracy) lie exactly on the street network.
+	\item Following the same ideas behind the quadratcounts procedure applied on the plane, we want to \alert{count the number of car crashes occurring on each edge of the street network}. 
+	\item R can only represent exactly integers numbers and fractions whose denominator is a power of two \href{https://cran.r-project.org/doc/FAQ/R-FAQ.html\#Why-doesn_0027t-R-think-these-numbers-are-equal_003f}{(source)}, so none of the car crashes (whose coordinates are represented as double numbers with a 53 binary digits accuracy) lie exactly on the street network.
 	\item For that reason we wrote a few R function to match each car crash with the nearest edge on the network and count the occurrences.
 \end{itemize}
 \end{frame}
@@ -282,8 +291,8 @@ This is the result. You should note that we excluded all car crashes that were f
 \begin{itemize}
 	\setlength\itemsep{1em}
 	\item There are some clear problems with the previous risk measure and, the most important one, is that we are comparing ways with very different length (i.e. different \textit{exposure}). 
-	\item There are two possible solutions: 1) rebuild the network cutting and pasting ways in such a way that they all have approximately the same length; 2) estimate the number of car crashes per meter. 
-	\item For the moment we are working with the second solution since the other one is much more difficult to implement. 
+	\item There are two possible solutions: 1) rebuild the network cutting and pasting ways in such a way that they all have approximately the same length; 2) \alert{estimate the number of car crashes per meter}. 
+	\item For the moment we have to deal with the second solution since the other one is much more difficult to implement. 
 \end{itemize}
 \end{frame}
 
@@ -317,7 +326,7 @@ This is the result and, then again, there are some obvious problems: there are a
 \vspace{-0.5cm}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item Now we can perform a local smoothing of $y_i$, i.e. the number of car crashes per meter, as
+	\item Now we can perform a \alert{local smoothing of $y_i$} as
 	\[
 	\tilde{y}_i = \frac{1}{m_i}\sum_{j \in \delta_{i, p}} y_{j} 
 	\]
@@ -325,7 +334,6 @@ This is the result and, then again, there are some obvious problems: there are a
 	
 	\item The value of $p$ is an input for the procedure and represent the degree of the smoothing: small values represent a local smoothing while higher values create a "global" smoothing. For example if we take $p = n$ then every segment is linked with the same value, i.e. $\tilde{y} = \frac{1}{n}\sum_{i=1}^{n}y_{i} \ \forall i = 1, \dots, n$. 
 	
-	\item We'll see later a few methods that can be used to decide the value of $p$. 
 	\item The procedure was coded using the \texttt{igraph} package.
 \end{itemize}
 \end{frame}
@@ -355,7 +363,7 @@ This is the same procedure applied to the street network without the cleaning an
 \vspace{-0.75cm}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item Nevertheless, even if we work with a proper and clean network, the smoothing procedure has several drawbacks since it is nothing more than an exploratory data analysis (EDA) procedure. 
+	\item Nevertheless, even if we work with a proper and clean network, the smoothing formula has several drawbacks since it is nothing more than an exploratory data analysis (EDA) procedure. 
 	
 	\item We did not define any precise statistical model which implies that we can't quantify any uncertainty measure on the risk indexes. Moreover, inference and testing procedures are not clearly defined. 
 	
@@ -373,7 +381,7 @@ This is the same procedure applied to the street network without the cleaning an
 	x_i \sim \alert{\text{Poisson}}(l_i\theta_i)
 	\] 	
 	where $l_i$ represents the \alert{exposure} on each segment and $\theta_i$ is the \alert{risk measure of the $i$th street segment}. 
-	\item There are several possible ways to measure the exposure of each segment and, for the moment, we are going to assume that $l_i$ represents the length of the $i$th segment. 
+	\item There are several possible ways to measure the exposure of each segment and, for the moment, we are going to assume that $l_i$ represents the \alert{length} of the $i$th segment. 
 \end{itemize}
 \end{frame}
 
@@ -386,11 +394,11 @@ This is the same procedure applied to the street network without the cleaning an
 	\[
 	y_{i} = \frac{x_i}{l_i}
 	\]  
-	which is just the ratio between the number of car crashes and the length of the edge and, under the previous assumptions, represent the maximum likelihood estimates of $\theta_i$. 
+	which is just the \alert{ratio between the number of car crashes and the length of the edge} and, under the previous assumptions, represent the maximum likelihood estimates of $\theta_i$. 
 	
 	% It's easy to prove that $\mathbb{E}[y_i] = \theta_i$ (i.e. unbiased estimator) and $\text{var}[y_i] = \frac{\theta_i}{l_i}$.
 	
-	\item It's possible to prove that $\text{var}[y_i] = \frac{\theta_i}{l_i}$, which implies that the lower is the exposure, the more inaccurate is the estimate $y_i$. Moreover, it's possible to prove that, taken together, $\lbrace y_i, \ i = 1,\dots,n\rbrace$ are not necessarily the best\footnote{with a squared loss function} estimates of $\lbrace \theta_i, \ i = 1, \dots, n \rbrace$.   
+	\item It's possible to prove that $\text{var}[y_i] = \frac{\theta_i}{l_i}$, which implies that the lower is the exposure, the more inaccurate is the estimate $y_i$. Moreover, it's possible to prove that, taken together, \alert{$\lbrace y_i, \ i = 1,\dots,n\rbrace$ are not necessarily the best\footnote{with a squared loss function} estimates of $\lbrace \theta_i, \ i = 1, \dots, n \rbrace$}.   
 \end{itemize}
 \end{frame}
 
@@ -399,7 +407,7 @@ This is the same procedure applied to the street network without the cleaning an
 \vspace{-0.75cm}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item The classical statistical setting is based on the assumption that $\theta_i$, the parameter that we want to estimate, is a fixed and unknown quantity and all the inferential procedures are based on the \textit{repeated sampling principle} (i.e. we imagine it's possible to get other samples $\lbrace x_i, \ i = 1,\dots,n \rbrace$ which are generated under the same random mechanism). 
+	\item The classical statistical setting is based on the assumption that $\theta_i$, the parameter that we want to estimate, is a fixed and unknown quantity and all the inferential procedures are based on the \href{https://www.facebook.com/BayesianStatisticsBrokeMyPockets/photos/a.168432696942117/311094049342647/?type=3\&theater}{\textit{repeated sampling principle}} (i.e. we imagine it's possible to get other samples $\lbrace x_i, \ i = 1,\dots,n \rbrace$ which are generated under the same random mechanism). 
 	\item Instead, in a bayesian framework, the sample is fixed while the parameters $\theta_i$ represent a random quantity that should be specified as a \textit{random variable} with its \textit{prior distribution}. We can include in the \textit{prior distirbution} all the previous knowledge we have on $\theta_{i}$, like its mean, median, modal quantity or range of variation. The statisticians then use the Bayes theorem to combine the 
 \end{itemize}
 \end{frame}
@@ -409,11 +417,11 @@ This is the same procedure applied to the street network without the cleaning an
 \vspace{-0.75cm}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item Now we are going to adopt a bayesian mindset specifying $\theta_i$ as a random variable with mean $\mu_i$ and variance $\sigma^2_i$, without any explicit functional form. 
+	\item Now we are going to adopt a \alert{bayesian mindset} specifying $\theta_i$ as a random variable with mean $\mu_i$ and variance $\sigma^2_i$, without any explicit functional form. 
 	
 	\item So this is the framework 
 	\[
-	x_i | \theta_i \sim \text{Poisson}(l_i\theta_i) \text{ and } \theta_i \sim (\mu_i, \sigma^2_i). 
+	\alert{x_i | \theta_i \sim \text{Poisson}(l_i\theta_i)} \text{ and } \alert{\theta_i \sim (\mu_i, \sigma^2_i)}. 
 	\]  
 	
 	\item If we define $y_i$ in the same manner as before, then $\mathbb{E}[y_i | \theta_i] = \theta_i$ and $\text{var}[y_i | \theta_i] = \frac{\theta_{i}}{l_i}$. By the law of iterated expected values 
@@ -432,11 +440,11 @@ This is the same procedure applied to the street network without the cleaning an
 \vspace{-0.75cm}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item It's possible to prove that the best linear Bayesian estimator for $\lbrace \theta_{i}, \ i = 1, \dots, n \rbrace$ is given by the \alert{shrinkage estimator}:
+	\item It's possible to prove that the best linear bayesian estimator for $\lbrace \theta_{i}, \ i = 1, \dots, n \rbrace$ is given by the \alert{shrinkage estimator}:
 	\[
-	\hat{\theta_i} = P_iy_i + (1 - P_i)\mu_i, \ i = 1, \dots, n
+	\alert{\hat{\theta_i} = P_iy_i + (1 - P_i)\mu_i, \ i = 1, \dots, n}
 	\]
-	where $P_i = \frac{\sigma^2_i}{\nu_i}$. 
+	where $P_i = \frac{\sigma^2_i}{\nu_i} = \frac{\sigma^2_i}{\sigma^2_i + \frac{\mu_i}{l_i}}$. 
 	
 	\item We can see that $\hat{\theta_i}$ is a weighted average of the prior mean, $\mu_i$ and $y_i$, the raw estimate for $\theta_{i}$. The weights $P_i$ are proportional to the exposure, which means that the grater is $l_i$, and the more important is $y_i$ in the estimation of $\theta_i$ 
 \end{itemize}
@@ -447,9 +455,9 @@ This is the same procedure applied to the street network without the cleaning an
 \vspace{-0.75cm}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item There are two problems now. The first problem is that the number of parameters in the model is greater than the number of edges in the network (which makes the model unidentifiable). We can solve it by assuming that $\mu_i = \mu \ \forall i$ and $\sigma^2_i = \sigma^2 \ \forall i$. 
+	\item There are two problems now. The first problem is that the number of parameters in the model is greater than the number of edges in the network (which makes the model unidentifiable). We can solve it by assuming that $\alert{\mu_i = \mu \ \forall i}$ and $\alert{\sigma^2_i = \sigma^2 \ \forall i}$. 
 	
-	\item The second problem is that we don't know $\mu$ and $\sigma^2$ but, using the James-Stein approach, we can estimate them using the marginal distribution of $Y$ (since we proved that $\mathbb{E}[y_i] = \mu$ and $\text{var}[y_i] = \sigma^2$). This is called an Empirical Bayes Approach. 
+	\item The second problem is that we don't know $\mu$ and $\sigma^2$ but, using the James-Stein approach, we can estimate them using the marginal distribution of $Y$ (since we proved that $\mathbb{E}[y_i] = \mu$ and $\text{var}[y_i] = \sigma^2$). This is called an \href{https://www.facebook.com/BayesianStatisticsBrokeMyPockets/photos/a.168432696942117/288206678298051/?type=3\&theater}{Empirical Bayes Approach}. 
 \end{itemize}
 \end{frame}
 
@@ -471,9 +479,9 @@ This is the same procedure applied to the street network without the cleaning an
 	\[
 	\tilde{P}_i = \frac{\tilde{\sigma}^2}{\tilde{\sigma}^2 + \frac{\tilde{\mu}}{l_i}} 
 	\]
-	and the empirical version of the shrinkage estimator is
+	The empirical version of the shrinkage estimator is
 	\[
-	\hat{\theta}_i = \tilde{P}_iy_i + (1 - \tilde{P}_i)\tilde{\mu}
+	\alert{\hat{\theta}_i = \tilde{P}_iy_i + (1 - \tilde{P}_i)\tilde{\mu}}
 	\]
 \end{itemize}
 \end{frame}
@@ -483,9 +491,9 @@ This is the same procedure applied to the street network without the cleaning an
 \vspace{-0.75cm}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item The problem now is that we are completely ignoring the spatial component of the model (i.e. if we randomly shuffle all the counts $x_i$ the $\hat{\theta}_i$ doesn't change). 
+	\item The problem now is that \alert{we are completely ignoring the spatial component of the model} (i.e. if we randomly shuffle all the counts $x_i$ the $\hat{\theta}_i$ doesn't change). 
 	
-	\item We can fix that using the same approach as before, i.e. we can define a set $\delta_{i, p}$ which represent all the neghbours of the $i$th edge up to order $p$ and modify all the previous formula just to take into account just the edges included in $\delta_{i, p}$. For example
+	\item We can fix that using the same approach as before, i.e. we can define a set $\delta_{i, p}$ which represent all the neghbours of the $i$th edge up to order $p$ and \alert{modify all the previous formulas to take into account just the edges included in $\delta_{i, p}$}. For example
 	\[
 	\tilde{\mu}_{i, 1} = \frac{\sum_{j \in \delta_{i, p}} y_jl_j}{\sum_{j \in \delta_{i, p}} l_j}
 	\]
@@ -512,17 +520,18 @@ We tried to apply that methodology to our data with several possible choices of 
 	
 	\item In our case it occurred (by chance) that a few car crashes happened really close to the short edges in the network while all the other surrounding ways remained "empty". This means that $P_i \to 1$, $\hat{\theta}_i \to y_i$ and our methodology fails to solve that problem.
 	
-	\item  We need an algorithm to merge the shortest $z\%$ of segments with its nearest and shortest neighbour. We choose $z = 15\%$. 
+	\item  We need an algorithm to \alert{merge the shortest $z\%$ of segments with its nearest and shortest neighbour}. We choose $z = 15\%$. 
 \end{itemize}
 \end{frame}
 
 \begin{frame}
 \frametitle{Merging the shortest segments}
 \vspace{-0.5cm}
-We just started working on this topic, so please don't judge me \dots
+We \href{https://github.com/ropensci/stplanr/issues/359}{just} started working on this topic, so please don't judge me \dots
 \begin{figure}
 	\centering
-	\includegraphics[height=0.7\textheight]{images/js.jpeg}
+	\includegraphics[height=0.7\textheight]{images/js.jpeg}\\
+	\hspace*{15pt}\hbox{\scriptsize Credit:\thinspace{\small\itshape Subreddit - ProgrammerHumor, User: tetenric}}
 \end{figure}
 \end{frame}
 
@@ -562,22 +571,36 @@ This is the result with $p = 1$. I think that the methodology is really good but
 \end{frame}
 
 
-\begin{frame}{Future Work}
+\begin{frame}[t,allowframebreaks]
+\frametitle{Future Works}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item Redefine $l_i$
-	\item Consider the risk of the estimation of $l_i$
+	\item Define a proper methodology that takes into account also the severity of car crashes.
+	\item Explore several measures of spatial autocorrelation to decide the value of $p$ (like Moran's $I$). 
+	\item Properly define $l_i$ as a function of: edge length, Average Annual Daily Traffic, highway type, distance to the nearest intersection and so on\dots (Ideas?).
+	\item Take into account the variability associated with the prediction of $l_i$.
+	\item Explore the possibility to define a proper prior for $\theta_{i}$. 
+	\item Check the differences with more complex and structured spatial bayesian models (i.e. CAR models with MCMC inference).
+	 \item Define a proper algorithm for cutting and pasting the edges in the street network. 
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{TODO}
+\frametitle{Final Credits}
+\vspace{-0.75cm}
 \begin{itemize}
-	\item Add citations (baddeley, STATS19, geofabric, osmdata, stplanr, sf, R, fix sources, ggplot2, borgons e reference lì)and fix bibliography
-	\item Add credits to memes, OSM and beamer theme
-	% https://tex.stackexchange.com/questions/48473/best-way-to-give-sources-of-images-used-in-a-beamer-presentation
-	\item highlight important word (i.e. \alert{ABC})
-	\item Repeated Sampling Principle meme with hyperref. Also empricial bayes, frankenstein junior? 
+	\setlength\itemsep{1em}
+	\item Beamer theme: \href{https://it.overleaf.com/latex/templates/modele-de-presentation-telecom-bretagne/fmthsbxrwcdd}{https://it.overleaf.com/latex/templates/modele-de-presentation-telecom-bretagne/fmthsbxrwcdd}
 \end{itemize}
 \end{frame}
+
+\begin{frame}[t,allowframebreaks]
+\nocite{*}
+\frametitle{References}
+\printbibliography
+\end{frame}
+
 \end{document}
+
+
+
